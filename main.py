@@ -4,7 +4,17 @@ app=Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    titulo="IDGS801"
+    lista=["perdro","juan","luis"]
+    return render_template("index.html",titulo=titulo,lista=lista)
+
+@app.route("/ejemplo1")
+def ejemplo1():
+    return render_template("ejemplo1.html")
+
+@app.route("/ejemplo2")
+def ejemplo2():
+    return render_template("ejemplo2.html")
 
 @app.route("/hola")
 def hola():
