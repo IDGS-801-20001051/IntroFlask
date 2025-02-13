@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/estilos.css') }}"
+    />
+    <title>Cinepolis</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="titulo">Cinepolis</h1>
+      <form method="POST" class="formulario">
+        <div class="form-left">
+          <label for="nombre">Comprador:</label>
+          <input type="text" id="nombre" name="nombre" required /><br /><br />
+
+          <label for="personas">Cantidad de personas:</label>
+          <input
+            type="number"
+            id="personas"
+            name="personas"
+            required
+          /><br /><br />
+
+          <label for="boletos">Número de boletos:</label>
+          <input
+            type="number"
+            id="boletos"
+            name="boletos"
+            required
+          /><br /><br />
+
+          <label>Método de pago:</label><br />
+          <input
+            type="radio"
+            id="efectivo"
+            name="metodo_pago"
+            value="efectivo"
+            required
+          />
+          <label for="efectivo">Efectivo</label><br />
+          <input
+            type="radio"
+            id="tarjeta"
+            name="metodo_pago"
+            value="tarjeta"
+            required
+          />
+          <label for="tarjeta">Tarjeta Cineco</label><br /><br />
+
+          <button type="submit" class="btn-comprar">Comprar</button>
+        </div>
+
+        <div class="form-right">
+          <h3>Pago Total:</h3>
+          <p id="precio">{{ resultado if resultado else "0" }}</p>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

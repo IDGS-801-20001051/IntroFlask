@@ -1,6 +1,40 @@
-from flask import Flask,render_template
+from flask import Flask, render_template, request
+from io import open
 
-app=Flask(__name__)
+app = Flask(__name__)
+
+class SalaDeCine:
+    precio_entrada = 12
+    lista_ventas = []
+
+    def calcular_rebaja(self, total, entradas):
+        if entradas > 5:
+            return total * 0.85
+        elif 3 <= entradas <= 5:
+            return total * 0.90
+        else:
+            return total
+
+    def validar_entradas(self, asistentes, entradas):
+        return entradas <= asistentes * 7
+
+    def guardar_venta(self, comprador, total):
+        self.lista_ventas.append((comprador, total))
+
+    def mostrar_resumen_ventas(self):
+        if not self.lista_ventas:
+            return "No se realizaron ventas."
+        else:
+            resumen = ""
+            total_recaudado = 0
+            for comprador, total in self.lista_ventas:
+                resumen += f"{comprador}: ${total:.2f}<br>"
+                total_recaudado += total
+            resumen += f"Total Recaudado: ${total_recaudado:.2f}"
+            return resumen
+
+cine = SalaDeCine()
+
 
 @app.route("/")
 def index():
@@ -41,15 +75,56 @@ def suma(n1,n2):
 def func(param="juan"):
     return f"<h1>Hola, {param}<h1>"
 
-@app.route("/aperas")
-def aperas():
-    return'''
-            <form>
-            <label for="name"> Name </label>
-            <input id="id">hola</input>
-            </form>
 
-            '''
+
+@app.route("/OperasBas", methods=["GET", "POST"])
+def operas():
+    resultado = None
+ 
+    if request.method == "POST":
+        n1 = int(request.form.get("n1"))
+        n2 = int(request.form.get("n2"))
+        operacion = request.form.get("operacion")
+ 
+        if operacion == "suma":
+            resultado = f"{n1} + {n2} = {n1 + n2}"
+        elif operacion == "resta":
+            resultado = f"{n1} - {n2} = {n1 - n2}"
+        elif operacion == "multiplicacion":
+            resultado = f"{n1} * {n2} = {n1 * n2}"
+        elif operacion == "division":
+            if n2 != 0:
+                resultado = f"{n1} / {n2} = {n1 / n2}"
+            else:
+                resultado = "Error: No se puede dividir por cero."
+ 
+    return render_template("OperasBas.html", resultado=resultado)
+
+
+@app.route("/cinepolis", methods=["GET", "POST"])
+def cinepolis():
+    resultado = None
+
+    if request.method == "POST":
+        nombre_cliente = request.form.get("nombre")
+        cantidad_personas = int(request.form.get("personas"))
+        numero_entradas = int(request.form.get("boletos"))
+        forma_pago = request.form.get("metodo_pago")
+
+        if cine.validar_entradas(cantidad_personas, numero_entradas):
+            total_sin_descuento = cine.precio_entrada * numero_entradas
+            total_con_descuento = cine.calcular_rebaja(total_sin_descuento, numero_entradas)
+
+            if forma_pago == "tarjeta":
+                total_con_descuento *= 0.90
+
+            cine.guardar_venta(nombre_cliente, total_con_descuento)
+            resultado = f"Total a pagar: ${total_con_descuento:.2f}"
+        else:
+            resultado = "No puedes comprar más de 7 boletos por persona."
+
+    return render_template("cinepolis.html", resultado=resultado)
+
 
 
 if __name__ =="__main__":

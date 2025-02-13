@@ -1,0 +1,112 @@
+body {
+    background-image: url("../img/fondo.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+  * {
+    color: white;
+    font-family: Arial, sans-serif;
+  }
+  
+  label, h1, h2, p {
+    color: white;
+  }
+  
+  input, select {
+    color: black;
+    background-color: white;
+    border: 1px solid white;
+    padding: 5px;
+  }
+  
+  button {
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: lightgray;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+  }
+  
+  .container {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .titulo {
+    margin-top: 30px;
+    font-size: 2em;
+  }
+  
+  .formulario {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 30px;
+    gap: 40px;
+  }
+  
+  .form-left {
+    text-align: left;
+    width: 50%;
+  }
+  
+  .form-left label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  .form-left input[type="text"],
+  .form-left input[type="number"] {
+    padding: 8px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 250px;
+  }
+  
+  .form-right {
+    text-align: center;
+    width: 50%;
+  }
+  
+  #precio {
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+  
+  .btn-comprar {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+  }
+  
+  .btn-comprar:hover {
+    background-color: #0056b3;
+  }
+  
+  .resultado {
+    margin-top: 30px;
+    text-align: center;
+  }
+  
+  .resultado h2 {
+    font-size: 1.5em;
+  }
+  
