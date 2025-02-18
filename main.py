@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from io import open
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -34,6 +35,32 @@ class SalaDeCine:
             return resumen
 
 cine = SalaDeCine()
+
+
+
+class Usuario:
+    def __init__(self, nombre, apellido_p, apellido_m, dia, mes, anio, sexo):
+        self.nombre = nombre
+        self.apellido_p = apellido_p
+        self.apellido_m = apellido_m
+        self.dia = int(dia)
+        self.mes = int(mes)
+        self.anio = int(anio)
+        self.sexo = sexo
+        self.edad = self.calcular_edad()
+        self.signo_chino = self.obtener_signo_chino()
+
+    def calcular_edad(self):
+        hoy = datetime.today()
+        edad = hoy.year - self.anio - ((hoy.month, hoy.day) < (self.mes, self.dia))
+        return edad
+
+    def obtener_signo_chino(self):
+        signos_chinos = [
+            "mono", "gallo", "perro", "cerdo", "rata", "buey",
+            "tigre", "conejo", "dragon", "serpiente", "caballo", "cabra"
+        ]
+        return signos_chinos[self.anio % 12]
 
 
 @app.route("/")
@@ -119,13 +146,29 @@ def cinepolis():
                 total_con_descuento *= 0.90
 
             cine.guardar_venta(nombre_cliente, total_con_descuento)
-            resultado = f"Total a pagar: ${total_con_descuento:.2f}"
+            resultado = f"${total_con_descuento:.2f}"
         else:
             resultado = "No puedes comprar más de 7 boletos por persona."
 
     return render_template("cinepolis.html", resultado=resultado)
 
+@app.route("/zodiaco", methods=["GET", "POST"])
+def zodiaco():
+    if request.method == "POST":
+        nombre = request.form["nombre"]
+        apellido_p = request.form["apellido_p"]
+        apellido_m = request.form["apellido_m"]
+        dia = request.form["dia"]
+        mes = request.form["mes"]
+        anio = request.form["anio"]
+        sexo = request.form["sexo"]
+
+        usuario = Usuario(nombre, apellido_p, apellido_m, dia, mes, anio, sexo)
+        return render_template("zodiaco.html", usuario=usuario)
+
+    return render_template("zodiaco.html", usuario=None)
+
 
 
 if __name__ =="__main__":
-    app.run(debug=True, port=3000) #Debug hace un reload
+    app.run(debug=True, port=3000) 

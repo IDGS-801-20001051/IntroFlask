@@ -1,0 +1,37 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  .container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 50px;
+  }
+  .formulario {
+    padding: 20px;
+    border: 2px solid black;
+    width: 400px;
+  }
+  .resultado {
+    text-align: left;
+  }
+  .boton {
+    padding: 10px;
+    background-color: black;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  img {
+    width: 100px;
+    height: 100px;
+  }
+  .fecha-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .fecha-container input {
+    width: 30%;
+  }

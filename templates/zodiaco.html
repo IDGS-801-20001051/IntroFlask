@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formulario Flask</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/zodiaco.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <div class="formulario">
+        <h2>Formulario de Datos Personales</h2>
+        <form method="POST">
+          <label>Nombre:</label><br />
+          <input type="text" name="nombre" required /><br /><br />
+
+          <label>Apellido Paterno:</label><br />
+          <input type="text" name="apellido_p" required /><br /><br />
+
+          <label>Apellido Materno:</label><br />
+          <input type="text" name="apellido_m" required /><br /><br />
+
+          <label>Fecha de Nacimiento:</label><br />
+          <div class="fecha-container">
+            <input
+              type="number"
+              name="dia"
+              min="1"
+              max="31"
+              required
+              placeholder="Día"
+            />
+            <input
+              type="number"
+              name="mes"
+              min="1"
+              max="12"
+              required
+              placeholder="Mes"
+            />
+            <input
+              type="number"
+              name="anio"
+              min="1900"
+              max="2024"
+              required
+              placeholder="Año"
+            />
+          </div>
+          <br />
+          <label>Sexo:</label><br />
+          <input type="radio" name="sexo" value="Masculino" required />
+          Masculino
+          <input type="radio" name="sexo" value="Femenino" required />
+          Femenino<br /><br />
+          <button type="submit" class="boton">IMPRIMIR</button>
+        </form>
+      </div>
+      {% if usuario %}
+      <div class="resultado">
+        <h2>
+          Hola
+          <b
+            >{{ usuario.nombre }} {{ usuario.apellido_p }} {{ usuario.apellido_m
+            }}</b
+          >
+        </h2>
+        <p>Tienes <b>{{ usuario.edad }}</b> años</p>
+        <p>Tu signo zodiacal chino es:</p>
+        <img
+          src="{{ url_for('static', filename='img/' + usuario.signo_chino + '.jpg') }}"
+          alt="Signo Chino"
+        />
+        <p>Es <b>{{ usuario.signo_chino }}</b></p>
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>
