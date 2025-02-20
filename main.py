@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from io import open
 from datetime import datetime
+import forms
 
 app = Flask(__name__)
 
@@ -167,6 +168,22 @@ def zodiaco():
         return render_template("zodiaco.html", usuario=usuario)
 
     return render_template("zodiaco.html", usuario=None)
+
+
+@app.route("/Alumnos",methods=["GET","POST"])
+def alumnos():
+    mat=''
+    nom=''
+    ape=''
+    email=''
+    alumno_class=forms.UserForm(request.form)
+    if request.method == 'POST':
+        mat = alumno_class.matricula.data
+        nom = alumno_class.nombre.data
+        ape = alumno_class.apellido.data
+        email = alumno_class.correo.data
+
+    return render_template("Alumnos.html",form=alumno_class,mat=mat,nom=nom,ape=ape,email=email)
 
 
 
