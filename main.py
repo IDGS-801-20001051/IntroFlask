@@ -1,11 +1,8 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flash, g
 from io import open
 from datetime import datetime
 import forms
 from flask_wtf.csrf import CSRFProtect
-from flask import flash
-from flask import g
-
 
 app = Flask(__name__)
 app.secret_key="Esta es una clave secreta"
@@ -179,20 +176,28 @@ def cinepolis():
 
 @app.route("/zodiaco", methods=["GET", "POST"])
 def zodiaco():
-    if request.method == "POST":
-        nombre = request.form["nombre"]
-        apellido_p = request.form["apellido_p"]
-        apellido_m = request.form["apellido_m"]
-        dia = request.form["dia"]
-        mes = request.form["mes"]
-        anio = request.form["anio"]
-        sexo = request.form["sexo"]
+    nombre = ''
+    edad = 0
+    signo = ''
+    zodiaco_form = forms.ZodiacoForm(request.form)
+
+    if request.method == "POST" and zodiaco_form.validate():
+        nombre = zodiaco_form.nombre.data
+        apellido_p = zodiaco_form.apellido_p.data
+        apellido_m = zodiaco_form.apellido_m.data
+        dia = zodiaco_form.dia.data
+        mes = zodiaco_form.mes.data
+        anio = zodiaco_form.anio.data
+        sexo = zodiaco_form.sexo.data
 
         usuario = Usuario(nombre, apellido_p, apellido_m, dia, mes, anio, sexo)
-        return render_template("zodiaco.html", usuario=usuario)
 
-    return render_template("zodiaco.html", usuario=None)
+        '''mensaje = f'Bienvenido {usuario.nombre} {usuario.apellido_p}, tienes {usuario.edad} años y tu signo chino es {usuario.signo_chino}'
+        flash(mensaje)'''
 
+        return render_template("zodiaco.html", form=zodiaco_form, nombre=usuario.nombre, edad=usuario.edad, signo=usuario.signo_chino)
+
+    return render_template("zodiaco.html", form=zodiaco_form, nombre=nombre, edad=edad, signo=signo)
 
 @app.route("/Alumnos",methods=["GET","POST"])
 def alumnos():

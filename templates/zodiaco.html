@@ -1,82 +1,50 @@
-<!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formulario Flask</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/zodiaco.css') }}"
+{% extends "layout2.html" %} {% block content %} {% import "_macros.html" as
+macro %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/zodiaco.css') }}"
+/>
+
+<div class="container">
+  <div class="formulario">
+    <h2>Datos Personales</h2>
+    <form action="" method="post" novalidate>
+      {{ form.csrf_token }}
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+      <div class="row">
+        <div class="col-md-12">{{ macro.camposNuevos(form.nombre) }}</div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">{{ macro.camposNuevos(form.apellido_p) }}</div>
+        <div class="col-md-6">{{ macro.camposNuevos(form.apellido_m) }}</div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3">{{ macro.camposNuevos(form.dia) }}</div>
+        <div class="col-md-3">{{ macro.camposNuevos(form.mes) }}</div>
+        <div class="col-md-3">{{ macro.camposNuevos(form.anio) }}</div>
+        <div class="col-md-3">{{ macro.camposNuevos(form.sexo) }}</div>
+      </div>
+
+      <input type="submit" value="Calcular" class="btn btn-primary" />
+    </form>
+  </div>
+
+  <div class="resultado">
+    <h2>Tu Signo es:</h2>
+    {% if nombre %}
+    <p><strong>Nombre:</strong> {{ nombre }}</p>
+    <p><strong>Edad:</strong> {{ edad }}</p>
+    <p><strong>Signo Chino:</strong> {{ signo }}</p>
+    <img
+      src="{{ url_for('static', filename='img/' + signo + '.jpg') }}"
+      alt="{{ signo }}"
     />
-  </head>
-  <body>
-    <div class="container">
-      <div class="formulario">
-        <h2>Formulario de Datos Personales</h2>
-        <form method="POST">
-          <label>Nombre:</label><br />
-          <input type="text" name="nombre" required /><br /><br />
-
-          <label>Apellido Paterno:</label><br />
-          <input type="text" name="apellido_p" required /><br /><br />
-
-          <label>Apellido Materno:</label><br />
-          <input type="text" name="apellido_m" required /><br /><br />
-
-          <label>Fecha de Nacimiento:</label><br />
-          <div class="fecha-container">
-            <input
-              type="number"
-              name="dia"
-              min="1"
-              max="31"
-              required
-              placeholder="Día"
-            />
-            <input
-              type="number"
-              name="mes"
-              min="1"
-              max="12"
-              required
-              placeholder="Mes"
-            />
-            <input
-              type="number"
-              name="anio"
-              min="1900"
-              max="2024"
-              required
-              placeholder="Año"
-            />
-          </div>
-          <br />
-          <label>Sexo:</label><br />
-          <input type="radio" name="sexo" value="Masculino" required />
-          Masculino
-          <input type="radio" name="sexo" value="Femenino" required />
-          Femenino<br /><br />
-          <button type="submit" class="boton">IMPRIMIR</button>
-        </form>
-      </div>
-      {% if usuario %}
-      <div class="resultado">
-        <h2>
-          Hola
-          <b
-            >{{ usuario.nombre }} {{ usuario.apellido_p }} {{ usuario.apellido_m
-            }}</b
-          >
-        </h2>
-        <p>Tienes <b>{{ usuario.edad }}</b> años</p>
-        <p>Tu signo zodiacal chino es:</p>
-        <img
-          src="{{ url_for('static', filename='img/' + usuario.signo_chino + '.jpg') }}"
-          alt="Signo Chino"
-        />
-        <p>Es <b>{{ usuario.signo_chino }}</b></p>
-      </div>
-      {% endif %}
-    </div>
-  </body>
-</html>
+    {% else %}
+    <p>Ingresa tus datos para ver los resultados.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
